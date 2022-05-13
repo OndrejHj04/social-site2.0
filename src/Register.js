@@ -1,22 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import Title from "./Title";
 import { initializeApp } from "firebase/app";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { getFirestore, setDoc, doc, getDocs, collection } from "firebase/firestore";
 import { useState } from "react";
 import { nanoid } from "nanoid";
-export default function Register() {
+export default function Register({ firebaseConfig, allUsers }) {
   const navigate = useNavigate();
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDsMFhDjRxf7C1MLjBW8wD1RB3kAjcB9aw",
-    authDomain: "social-site2.firebaseapp.com",
-    projectId: "social-site2",
-    storageBucket: "social-site2.appspot.com",
-    messagingSenderId: "229013792757",
-    appId: "1:229013792757:web:189ca1f612b91b6a7762bc",
-  };
-
   const [input, setInput] = useState({ username: "", email: "", password1: "", password2: "" });
+  const [duplicate, setDuplicate] = useState();
 
   initializeApp(firebaseConfig);
 
@@ -31,23 +23,22 @@ export default function Register() {
     });
   };
 
-
   const validateInput = () => {
-    return input.password1 === input.password2 && input.username.length > 3 && input.email.length > 3 && input.password1.length > 3 && input.password2.length > 3 && input.email.split("@").length === 2 && (input.email.split("@")[1].includes(".cz") || input.email.split("@")[1].includes(".com"))
+    // may cause error due old snapshot value
+    return input.password1 === input.password2 && !allUsers.some(item=>(item.username === input.username)) && !allUsers.some(item=>(item.email === input.email))
   };
 
   const makeLogin = () => {
-    if(validateInput()){
-      const id = nanoid()
+    if (validateInput()) {
+      const id = nanoid();
       setDoc(doc(db, "users", id), {
         username: input.username,
         email: input.email,
         password1: input.password1,
         password2: input.password2,
-      })
-      setInput({ username: "", email: "", password1: "", password2: "" })
-    }else{
-      
+      });
+      setInput({ username: "", email: "", password1: "", password2: "" });
+    } else {
     }
   };
   return (
@@ -82,7 +73,7 @@ export default function Register() {
       </div>
       <div className="flex justify-center m-4">
         <div className="bg-red-500 px-3 py-2 rounded-2xl text-white text-2xl hover:scale-105 transition-all cursor-pointer" onClick={makeLogin}>
-          Login
+          Register
         </div>
       </div>
       <p className="text-lg text-center">

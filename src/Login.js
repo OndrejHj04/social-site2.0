@@ -1,7 +1,42 @@
+import { collection, onSnapshot, getFirestore, getDocs } from "firebase/firestore";
+import { useState } from "react";
+import { initializeApp } from "firebase/app";
 import { useNavigate } from "react-router-dom";
 import Title from "./Title";
-export default function Login() {
+export default function Login({ firebaseConfig }) {
   const navigate = useNavigate();
+  initializeApp(firebaseConfig);
+
+  const db = getFirestore();
+  const [input, setInput] = useState({ username: "", password: "" });
+
+  const changeInput = (e) => {
+    setInput((oldVal) => {
+      return {
+        ...oldVal,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
+
+  const makeRegister = () => {
+    getDocs(collection(db, "users")).then((snapshot) => {
+      let users = [];
+      snapshot.docs.forEach((doc) => {
+        users.push({ ...doc.data(), id: doc.id });
+      });
+      checkRegister(users);
+    });
+
+    function checkRegister(arr) {
+      const user = arr.filter((item) => input.username === item.username && input.password === item.password1).length === 1;
+      console.log(user)
+      if (user) {
+        navigate("/scroll-page")
+      }
+    }
+  };
+
   return (
     <div className="max-w-3xl mx-auto my-5">
       <div className="flex flex-col sm:flex-row mx-2">
@@ -11,14 +46,16 @@ export default function Login() {
         </div>
         <form className="bg-slate-200 p-2 flex flex-col flex-1 rounded-b-3xl sm:rounded-r-3xl sm:rounded-l-none  text-xl">
           <label>Username</label>
-          <input type="text" className="rounded-lg" />
+          <input type="text" className="rounded-lg" onChange={changeInput} name="username" value={input.username} />
 
           <label>Password</label>
-          <input type="text" className="rounded-lg" />
+          <input type="text" className="rounded-lg" onChange={changeInput} name="password" value={input.password} />
         </form>
       </div>
       <div className="flex justify-center m-4">
-        <div className="bg-red-500 px-3 py-2 rounded-2xl text-white text-2xl hover:scale-105 transition-all cursor-pointer">Login</div>
+        <div className="bg-red-500 px-3 py-2 rounded-2xl text-white text-2xl hover:scale-105 transition-all cursor-pointer" onClick={makeRegister}>
+          Login
+        </div>
       </div>
       <p className="text-lg text-center">
         Dont have an account?{" "}
