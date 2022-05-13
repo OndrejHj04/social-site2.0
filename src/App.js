@@ -2,7 +2,7 @@ import Login from "./Login";
 import Register from "./Register";
 import ScrollPage from "./ScrollPage";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { getFirestore, setDoc, doc, getDocs, collection, onSnapshot } from "firebase/firestore";
+import { getFirestore, collection, onSnapshot } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import Nav from "./Nav";
 import { useEffect, useState } from "react";
@@ -30,7 +30,7 @@ export default function App() {
       });
       setAllUsers(users);
     });
-  }, []);
+  }, [db]);
 
   return (
     <BrowserRouter>

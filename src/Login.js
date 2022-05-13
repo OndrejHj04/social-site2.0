@@ -1,4 +1,4 @@
-import { collection, onSnapshot, getFirestore, getDocs } from "firebase/firestore";
+import { collection, getFirestore, getDocs } from "firebase/firestore";
 import { useState } from "react";
 import { initializeApp } from "firebase/app";
 import { useNavigate } from "react-router-dom";

@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import Title from "./Title";
 import { initializeApp } from "firebase/app";
-import { getFirestore, setDoc, doc, getDocs, collection } from "firebase/firestore";
+import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { useState } from "react";
 import { nanoid } from "nanoid";
 export default function Register({ firebaseConfig, allUsers }) {
   const navigate = useNavigate();
 
   const [input, setInput] = useState({ username: "", email: "", password1: "", password2: "" });
-  const [duplicate, setDuplicate] = useState();
 
   initializeApp(firebaseConfig);
 
