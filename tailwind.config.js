@@ -3,7 +3,14 @@ module.exports = {
     "./src/*"
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'blue': "#4267B2"
+      },
+      fontFamily:{
+        "chalk": ['Cabin Sketch'] 
+      },
+    },
   },
   plugins: [],
 }
