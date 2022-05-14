@@ -47,7 +47,7 @@ export default function App() {
 
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col"  style={{height: window.innerHeight}}>
       <Routes>
         <Route path="/" element={<Nav activeUser={activeUser} url={url} changeActiveUser={changeActiveUser} />}>
           <Route path="/" element={<Navigate to="/login" />}></Route>
