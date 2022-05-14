@@ -46,7 +46,7 @@ export default function App() {
   }, [location]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-screen">
       <Routes>
         <Route path="/" element={<Nav activeUser={activeUser} url={url} changeActiveUser={changeActiveUser} />}>
           <Route path="/" element={<Navigate to="/login" />}></Route>
