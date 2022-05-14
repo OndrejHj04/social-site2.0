@@ -7,7 +7,7 @@ export default function Nav({ url, activeUser, changeActiveUser }) {
     changeActiveUser()
     navigate("/login")
   }
-
+  
   return (
     <>
       <div className="bg-blue p-3 flex">

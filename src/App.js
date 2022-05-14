@@ -1,7 +1,7 @@
 import Login from "./Login";
 import Register from "./Register";
 import ScrollPage from "./ScrollPage";
-import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { getFirestore, collection, onSnapshot } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import Nav from "./Nav";
@@ -22,7 +22,7 @@ export default function App() {
     messagingSenderId: "229013792757",
     appId: "1:229013792757:web:189ca1f612b91b6a7762bc",
   };
-  console.log();
+
   const changeActiveUser = (p) => {
     setActiveUser(p);
   };
@@ -42,17 +42,19 @@ export default function App() {
   }, [db]);
 
   useEffect(() => {
-    setUrl(window.location.href)
+    setUrl(window.location.href);
   }, [location]);
 
   return (
-    <Routes>
-      <Route path="/" element={<Nav activeUser={activeUser} url={url} changeActiveUser={changeActiveUser}/>}>
-        <Route path="/" element={<Navigate to="/login" />}></Route>
-        <Route path="/login" element={<Login firebaseConfig={firebaseConfig} changeActiveUser={changeActiveUser} activeUser={activeUser} />}></Route>
-        <Route path="/register" element={<Register firebaseConfig={firebaseConfig} allUsers={allUsers} changeActiveUser={changeActiveUser} activeUser={activeUser} />}></Route>
-        <Route path="/scroll-page" element={<ScrollPage />}></Route>
-      </Route>
-    </Routes>
+    <div className="h-screen flex flex-col">
+      <Routes>
+        <Route path="/" element={<Nav activeUser={activeUser} url={url} changeActiveUser={changeActiveUser} />}>
+          <Route path="/" element={<Navigate to="/login" />}></Route>
+          <Route path="/login" element={<Login firebaseConfig={firebaseConfig} changeActiveUser={changeActiveUser} activeUser={activeUser} />}></Route>
+          <Route path="/register" element={<Register firebaseConfig={firebaseConfig} allUsers={allUsers} changeActiveUser={changeActiveUser} activeUser={activeUser} />}></Route>
+          <Route path="/scroll-page" element={<ScrollPage activeUser={activeUser} />}></Route>
+        </Route>
+      </Routes>
+    </div>
   );
 }
