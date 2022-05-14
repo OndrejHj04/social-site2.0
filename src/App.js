@@ -11,6 +11,11 @@ export default function App() {
   const [allUsers, setAllUsers] = useState();
   const [activeUser, setActiveUser] = useState(JSON.parse(data));
   const [url, setUrl] = useState(window.location.href);
+  const [height, setHeight] = useState()
+
+  useEffect(()=>{
+    setHeight(window.innerHeight)
+  },[window.onresize])
 
   const location = useLocation();
 
@@ -46,7 +51,7 @@ export default function App() {
   }, [location]);
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="flex flex-col" style={{height: height}}>
       <Routes>
         <Route path="/" element={<Nav activeUser={activeUser} url={url} changeActiveUser={changeActiveUser} />}>
           <Route path="/" element={<Navigate to="/login" />}></Route>

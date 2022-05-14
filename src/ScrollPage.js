@@ -1,8 +1,8 @@
 export default function ScrollPage() {
   return (
     <div className="flex flex-col">
-      <div className= "text-9xl overflow-y-scroll" style={{height: "calc(100vh - 140px)"}}>
-        
+      <div className= "text-9xl overflow-y-scroll" style={{height: "calc(100vh - 140px)", minHeight: "200px"}}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum amet dolorum nulla corporis numquam excepturi quasi ipsam repudiandae nostrum dicta a eos sed officiis facere possimus omnis odio, alias fuga.
       </div>
       <div className="flex m-2">
         <input type="text" className="text-2xl outline-none w-full border-2 border-black rounded-2xl p-2" />
