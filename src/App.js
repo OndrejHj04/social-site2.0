@@ -53,7 +53,7 @@ export default function App() {
           <Route path="/" element={<Navigate to="/login" />}></Route>
           <Route path="/login" element={<Login firebaseConfig={firebaseConfig} changeActiveUser={changeActiveUser} activeUser={activeUser} />}></Route>
           <Route path="/register" element={<Register firebaseConfig={firebaseConfig} allUsers={allUsers} changeActiveUser={changeActiveUser} activeUser={activeUser} />}></Route>
-          <Route path="/scroll-page" element={<ScrollPage activeUser={activeUser}/>}></Route>
+          <Route path="/scroll-page" element={<ScrollPage activeUser={activeUser} firebaseConfig={firebaseConfig}/>}></Route>
         </Route>
       </Routes>
     </div>

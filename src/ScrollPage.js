@@ -1,28 +1,57 @@
-import { useState } from "react";
+import { doc, setDoc, getFirestore, onSnapshot, collection, deleteDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import Message from "./Message";
+import { initializeApp } from "firebase/app";
+import { nanoid } from "nanoid";
 
-export default function ScrollPage() {
-  const [height, setHeight] = useState(window.innerHeight);
+export default function ScrollPage({ firebaseConfig, activeUser }) {
+  const [input, setInput] = useState("");
+  const [allMsgs, setAllMsgs] = useState();
 
-    window.addEventListener("resize", ()=>setHeight(window.innerHeight))
+  initializeApp(firebaseConfig);
+
+  const db = getFirestore();
+
+  const submit = (e) => {
+    e.preventDefault();
+    if (input.length) {
+      const id = nanoid();
+      setDoc(doc(db, "msg", id), {
+        user: activeUser.username,
+        text: input,
+        id: id
+      });
+    }
+    setInput("");
+  };
+
+  useEffect(() => {
+    onSnapshot(collection(db, "msg"), (snapshot) => {
+      let msgs = [];
+      snapshot.docs.forEach((doc) => {
+        msgs.push({ ...doc.data(), id: doc.id });
+      });
+      setAllMsgs(msgs);
+    });
+  }, []);
+
+  const remove = (id, name) =>{
+    activeUser.username === name&&deleteDoc(doc(db, "msg", id))
+  }
+
+  const displayMsgs = () => {
+    return allMsgs.map((item) => {
+      return <Message item={item} key={item.id} remove={remove} activeUser={activeUser}/>;
+    });
+  };
 
   return (
     <div className="flex flex-col flex-1 justify-between">
-      <div className="bg-white overflow-y-scroll text-xl h-full" style={{ height: `calc(${height}px - 129px)` }}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet vel porro quia nemo labore exercitationem iusto hic veritatis. Incidunt aspernatur quia eius expedita porro autem numquam quibusdam, maiores quaerat fugit.
-        Quibusdam repellendus assumenda nostrum nesciunt optio quos ducimus cumque laboriosam dicta, iusto reiciendis quo nam impedit debitis culpa error sapiente excepturi porro adipisci ullam necessitatibus eum ab cum voluptates? Minus!
-        Consectetur cum enim facere tempora ex adipisci explicabo vero, repellendus ipsum dolores, quia voluptate nemo quibusdam aliquam optio. Quo temporibus vitae dicta iusto odio, consectetur dolores. Velit magni debitis laborum!
-        Itaque libero velit excepturi, dolores asperiores reiciendis ab blanditiis culpa nam magni tempora qui, voluptates, fuga expedita quaerat inventore iusto at corporis nisi placeat optio! Blanditiis delectus quasi veritatis earum!
-        Quos recusandae veniam excepturi, ipsum fuga fugit, ipsam placeat, pariatur voluptatem iusto sequi eaque. Numquam rem excepturi at ipsam, ut, aliquid a vero molestiae hic dolore, natus magnam modi expedita.
-        Reprehenderit cum in amet deleniti mollitia dolore itaque eum error enim, est voluptas, atque unde ipsum praesentium earum officia at quibusdam sit placeat explicabo animi adipisci nam. Laudantium, modi consectetur.
-        Magnam distinctio delectus ab iste magni, id voluptatem neque praesentium alias fugit reprehenderit architecto aspernatur, tempora eos assumenda inventore voluptates officia quasi quidem nesciunt minus. Velit dolor sint magnam porro?
-        Ut, laboriosam eius! Quis cumque vero officiis sed, soluta maxime tempora blanditiis quod odit iste nisi labore reiciendis accusamus illo expedita rem ratione tempore, necessitatibus unde quos sunt, neque assumenda.
-        Earum perferendis explicabo quas eligendi molestiae libero quis odio esse rerum, animi similique sint numquam adipisci neque cupiditate officia, aspernatur accusantium accusamus ad. A provident, omnis et quas rem nisi.
-        Illo, dicta sunt, quia error totam rerum cum dolorem reprehenderit facere commodi autem laboriosam excepturi id praesentium aliquam quibusdam quos! Quas reprehenderit quibusdam exercitationem enim ipsum quidem porro error modi!
-      </div>
-      <div className="flex m-2">
-        <input type="text" className="w-full border-2 border-black" />
-        <img src={require("./img/send.png")} alt="" width="40" className="ml-2" />
-      </div>
+      {allMsgs&&<div className="bg-white overflow-y-scroll flex-1 ">{displayMsgs()}</div>}
+      <form className="flex m-2" onSubmit={submit}>
+        <input type="text" className="w-full border-2 border-black p-1 rounded-lg" value={input} onChange={(e) => setInput(e.target.value)} />
+        <img src={require("./img/send.png")} alt="" width="40" className="ml-2" onClick={submit} />
+      </form>
     </div>
   );
 }
