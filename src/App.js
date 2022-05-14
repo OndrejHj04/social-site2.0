@@ -46,19 +46,19 @@ export default function App() {
   }, [location]);
 
   const resize = () => {
-    setHeight(window.innerHeight)
+    setHeight(window.outerHeight)
   };
 
   window.addEventListener("resize", resize);
 
   return (
-    <div className="flex flex-col" style={{height: height+"px"}}>
+    <div className="flex flex-col h-full">
       <Routes>
         <Route path="/" element={<Nav activeUser={activeUser} url={url} changeActiveUser={changeActiveUser} />}>
           <Route path="/" element={<Navigate to="/login" />}></Route>
           <Route path="/login" element={<Login firebaseConfig={firebaseConfig} changeActiveUser={changeActiveUser} activeUser={activeUser} />}></Route>
           <Route path="/register" element={<Register firebaseConfig={firebaseConfig} allUsers={allUsers} changeActiveUser={changeActiveUser} activeUser={activeUser} />}></Route>
-          <Route path="/scroll-page" element={<ScrollPage activeUser={activeUser} />}></Route>
+          <Route path="/scroll-page" element={<ScrollPage activeUser={activeUser} height={height}/>}></Route>
         </Route>
       </Routes>
     </div>
