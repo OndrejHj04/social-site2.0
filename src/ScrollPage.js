@@ -1,6 +1,6 @@
 export default function ScrollPage() {
   return (
-    <div className="flex flex-col bg-red-300 h-full">
+    <div className="flex flex-col">
         <div className="bg-white overflow-y-scroll" style={{height: "calc(100vh - 130px)"}}>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illo rerum illum, voluptatem dicta ad impedit ipsum fugit incidunt reprehenderit neque eligendi rem odio commodi omnis dolorem velit corrupti et odit!
             Ratione perferendis ipsam aliquam illum alias quo dolore ea tenetur itaque. Error, ipsum qui et ullam id ducimus, suscipit nisi provident dolore eum tempora quia, numquam nemo corporis accusantium officia.
@@ -13,8 +13,8 @@ export default function ScrollPage() {
             Maiores, illo excepturi vel explicabo placeat fugit alias aut exercitationem, quas soluta commodi, id sapiente. Ipsam asperiores esse ad blanditiis optio officiis maiores, odio incidunt, omnis non et cupiditate corrupti!
             Eveniet minus cumque saepe odit eius, debitis natus, soluta illum ullam molestias amet ipsa consectetur sapiente exercitationem voluptatibus quidem nihil quod corrupti facere a magnam vitae. Rerum asperiores eius provident.
         </div>
-        <div className="flex m-2">
-            <input type="text" className="w-full"/>
+        <div className="flex m-2 relative bottom-0">
+            <input type="text" className="w-full border-2 border-black"/>
             <img src={require("./img/send.png")} alt="" width="40" className="ml-2"/>
         </div>
     </div>
