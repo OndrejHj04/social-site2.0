@@ -33,7 +33,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
       });
       setAllMsgs(msgs);
     });
-  }, []);
+  }, [db]);
 
   const remove = (id, name) =>{
     activeUser.username === name&&deleteDoc(doc(db, "msg", id))
