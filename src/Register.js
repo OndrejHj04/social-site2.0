@@ -4,7 +4,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { useState } from "react";
 import { nanoid } from "nanoid";
-export default function Register({ firebaseConfig, allUsers }) {
+export default function Register({ firebaseConfig, allUsers, changeActiveUser }) {
   const navigate = useNavigate();
 
   const [input, setInput] = useState({ username: "", email: "", password1: "", password2: "" });
@@ -27,7 +27,7 @@ export default function Register({ firebaseConfig, allUsers }) {
     return input.password1 === input.password2 && !allUsers.some(item=>(item.username === input.username)) && !allUsers.some(item=>(item.email === input.email))
   };
 
-  const makeLogin = () => {
+  const makeRegister = () => {
     if (validateInput()) {
       const id = nanoid();
       setDoc(doc(db, "users", id), {
@@ -36,8 +36,10 @@ export default function Register({ firebaseConfig, allUsers }) {
         password1: input.password1,
         password2: input.password2,
       });
+      changeActiveUser(input)
+      window.localStorage.setItem('user', JSON.stringify(input))
       setInput({ username: "", email: "", password1: "", password2: "" });
-    } else {
+      navigate("/scroll-page")
     }
   };
   return (
@@ -71,7 +73,7 @@ export default function Register({ firebaseConfig, allUsers }) {
         </form>
       </div>
       <div className="flex justify-center m-4">
-        <div className="bg-red-500 px-3 py-2 rounded-2xl text-white text-2xl hover:scale-105 transition-all cursor-pointer" onClick={makeLogin}>
+        <div className="bg-red-500 px-3 py-2 rounded-2xl text-white text-2xl hover:scale-105 transition-all cursor-pointer" onClick={makeRegister}>
           Register
         </div>
       </div>

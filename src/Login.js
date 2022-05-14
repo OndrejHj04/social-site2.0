@@ -3,7 +3,7 @@ import { useState } from "react";
 import { initializeApp } from "firebase/app";
 import { useNavigate } from "react-router-dom";
 import Title from "./Title";
-export default function Login({ firebaseConfig }) {
+export default function Login({ firebaseConfig, changeActiveUser }) {
   const navigate = useNavigate();
   initializeApp(firebaseConfig);
 
@@ -29,10 +29,11 @@ export default function Login({ firebaseConfig }) {
     });
 
     function checkRegister(arr) {
-      const user = arr.filter((item) => input.username === item.username && input.password === item.password1).length === 1;
-      console.log(user)
-      if (user) {
-        navigate("/scroll-page")
+      const user = arr.filter((item) => input.username === item.username && input.password === item.password1);
+      if (user.length === 1) {
+        changeActiveUser(user[0]);
+        window.localStorage.setItem("user", JSON.stringify(user[0]));
+        navigate("/scroll-page");
       }
     }
   };
