@@ -11,7 +11,6 @@ export default function App() {
   const [allUsers, setAllUsers] = useState();
   const [activeUser, setActiveUser] = useState(JSON.parse(data));
   const [url, setUrl] = useState(window.location.href);
-  const [height, setHeight] = useState(window.innerHeight);
   const location = useLocation();
 
   const firebaseConfig = {
@@ -45,11 +44,7 @@ export default function App() {
     setUrl(window.location.href);
   }, [location]);
 
-  const resize = () => {
-    setHeight(window.outerHeight)
-  };
 
-  window.addEventListener("resize", resize);
 
   return (
     <div className="flex flex-col h-full">
@@ -58,7 +53,7 @@ export default function App() {
           <Route path="/" element={<Navigate to="/login" />}></Route>
           <Route path="/login" element={<Login firebaseConfig={firebaseConfig} changeActiveUser={changeActiveUser} activeUser={activeUser} />}></Route>
           <Route path="/register" element={<Register firebaseConfig={firebaseConfig} allUsers={allUsers} changeActiveUser={changeActiveUser} activeUser={activeUser} />}></Route>
-          <Route path="/scroll-page" element={<ScrollPage activeUser={activeUser} height={height}/>}></Route>
+          <Route path="/scroll-page" element={<ScrollPage activeUser={activeUser}/>}></Route>
         </Route>
       </Routes>
     </div>
