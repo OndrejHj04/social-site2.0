@@ -57,7 +57,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
   window.addEventListener("resize", () => setHeight(window.innerHeight));
 
   return (
-    <div className="flex flex-col flex-1 justify-between" style={{ height: `calc(${height}px - 72px` }}>
+    <div className="flex flex-col flex-1 justify-between mx-2" style={{ height: `calc(${height}px - 72px` }}>
       <Scrollbars>{allMsgs && <div className="bg-white overflow-y-scroll">{displayMsgs()}</div>}</Scrollbars>
       <form className="flex m-2" onSubmit={submit}>
         <input type="text" className="w-full border-2 border-black p-1 rounded-lg" value={input} onChange={(e) => setInput(e.target.value)} />

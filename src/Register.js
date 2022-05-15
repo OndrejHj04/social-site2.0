@@ -8,6 +8,7 @@ export default function Register({ firebaseConfig, allUsers, changeActiveUser })
   const navigate = useNavigate();
 
   const [input, setInput] = useState({ username: "", email: "", password1: "", password2: "" });
+  const [fail, setFail] = useState("")
 
   initializeApp(firebaseConfig);
 
@@ -24,11 +25,12 @@ export default function Register({ firebaseConfig, allUsers, changeActiveUser })
 
   const validateInput = () => {
     // may cause error due old snapshot value
-    return input.password1 === input.password2 && !allUsers.some(item=>(item.username === input.username)) && !allUsers.some(item=>(item.email === input.email))
+    return input.password1 === input.password2 && !allUsers.some(item=>(item.username === input.username)) && !allUsers.some(item=>(item.email === input.email)) && input.username.length > 3 && input.username.length < 20 && input.password1.length >  5
   };
 
   const makeRegister = () => {
     if (validateInput()) {
+      setFail("")
       const id = nanoid();
       setDoc(doc(db, "users", id), {
         username: input.username,
@@ -40,6 +42,8 @@ export default function Register({ firebaseConfig, allUsers, changeActiveUser })
       window.localStorage.setItem('user', JSON.stringify(input))
       setInput({ username: "", email: "", password1: "", password2: "" });
       navigate("/scroll-page")
+    }else{
+      setFail("Please use proper values!")
     }
   };
   return (
@@ -77,6 +81,7 @@ export default function Register({ firebaseConfig, allUsers, changeActiveUser })
           Register
         </div>
       </div>
+      <p className="text-center text-red-500 font-semibold text-xl">{fail}</p>
       <p className="text-lg text-center">
         Already have an account?{" "}
         <span className="text-sky-600 font-semibold cursor-pointer" onClick={() => navigate("/login")}>

@@ -9,7 +9,7 @@ export default function Login({ firebaseConfig, changeActiveUser }) {
 
   const db = getFirestore();
   const [input, setInput] = useState({ username: "", password: "" });
-
+  const [fail, setFail] = useState("")
   const changeInput = (e) => {
     setInput((oldVal) => {
       return {
@@ -31,9 +31,12 @@ export default function Login({ firebaseConfig, changeActiveUser }) {
     function checkRegister(arr) {
       const user = arr.filter((item) => input.username === item.username && input.password === item.password1);
       if (user.length === 1) {
+        setFail("")
         changeActiveUser(user[0]);
         window.localStorage.setItem("user", JSON.stringify(user[0]));
         navigate("/scroll-page");
+      }else{
+        setFail("Please you proper values!")
       }
     }
   };
@@ -58,6 +61,7 @@ export default function Login({ firebaseConfig, changeActiveUser }) {
           Login
         </div>
       </div>
+      <p className="text-center text-red-500 font-semibold text-xl">{fail}</p>
       <p className="text-lg text-center">
         Dont have an account?{" "}
         <span className="text-sky-600 font-semibold cursor-pointer" onClick={() => navigate("/register")}>
