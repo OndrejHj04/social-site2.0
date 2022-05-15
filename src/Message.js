@@ -9,7 +9,7 @@ export default function Message({ item, remove, activeUser }) {
     return `${day}. ${month}. ${hours}:${minutes}`;
   };
   return (
-    <div className={`w-full flex group ${activeUser.username === item.user&&"justify-end"}`}>
+    <div className={` flex group ${activeUser.username === item.user&&"justify-end"}`}>
       <div className={`flex flex-col ${activeUser.username === item.user&&"order-2"}`}>
         <div className="flex justify-between">
           <h1 >{item.user}</h1>
