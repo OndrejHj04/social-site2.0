@@ -53,8 +53,8 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
   };
 
   return (
-    <div className="flex flex-col flex-1 justify-between">
-      {allMsgs && <div className="bg-white m-1 flex-1">{displayMsgs()}</div>}
+    <div className="flex flex-col flex-1 justify-between" style={{height: "calc(100% - 72px"}}>
+      {allMsgs && <div className="bg-white m-1 overflow-y-scroll">{displayMsgs()}</div>}
       <form className="flex m-2" onSubmit={submit}>
         <input type="text" className="w-full border-2 border-black p-1 rounded-lg" value={input} onChange={(e) => setInput(e.target.value)} />
         <img src={require("./img/send.png")} alt="" width="40" className="ml-2" onClick={submit} />

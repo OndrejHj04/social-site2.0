@@ -47,7 +47,6 @@ export default function App() {
 
 
   return (
-    <div className="flex flex-col"  style={{height: window.innerHeight}}>
       <Routes>
         <Route path="/" element={<Nav activeUser={activeUser} url={url} changeActiveUser={changeActiveUser} />}>
           <Route path="/" element={<Navigate to="/login" />}></Route>
@@ -56,6 +55,5 @@ export default function App() {
           <Route path="/scroll-page" element={<ScrollPage activeUser={activeUser} firebaseConfig={firebaseConfig}/>}></Route>
         </Route>
       </Routes>
-    </div>
   );
 }
