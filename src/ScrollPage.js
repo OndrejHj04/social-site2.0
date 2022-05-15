@@ -1,4 +1,4 @@
-import { doc, setDoc, getFirestore, onSnapshot, collection, deleteDoc } from "firebase/firestore";
+import { doc, setDoc, getFirestore, onSnapshot, collection, deleteDoc, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import Message from "./Message";
 import { initializeApp } from "firebase/app";
@@ -16,17 +16,20 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
     e.preventDefault();
     if (input.length) {
       const id = nanoid();
-      setDoc(doc(db, "msg", id), {
+      const time = new Date().getTime().toString()
+      setDoc(doc(db, "msg", time), {
         user: activeUser.username,
         text: input,
-        id: id
+        time: time
       });
     }
     setInput("");
   };
 
+ const q = query(collection(db, "msg"), orderBy("time", "asc"))
+
   useEffect(() => {
-    onSnapshot(collection(db, "msg"), (snapshot) => {
+    onSnapshot(q, (snapshot) => {
       let msgs = [];
       snapshot.docs.forEach((doc) => {
         msgs.push({ ...doc.data(), id: doc.id });
@@ -47,7 +50,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
 
   return (
     <div className="flex flex-col flex-1 justify-between">
-      {allMsgs&&<div className="bg-white overflow-y-scroll flex-1 ">{displayMsgs()}</div>}
+      {allMsgs&&<div className="bg-white m-1 flex-1">{displayMsgs()}</div>}
       <form className="flex m-2" onSubmit={submit}>
         <input type="text" className="w-full border-2 border-black p-1 rounded-lg" value={input} onChange={(e) => setInput(e.target.value)} />
         <img src={require("./img/send.png")} alt="" width="40" className="ml-2" onClick={submit} />
