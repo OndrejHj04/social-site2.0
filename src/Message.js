@@ -1,4 +1,4 @@
-export default function Message({ item, remove, activeUser }) {
+export default function Message({ item, remove, activeUser, name }) {
   const milis = () => {
     const date = new Date(Number(item.time));
     const day = date.getDate();
@@ -8,13 +8,14 @@ export default function Message({ item, remove, activeUser }) {
 
     return `${day}. ${month}. ${hours}:${minutes}`;
   };
+  
   return (
-    <div className={` flex group ${activeUser.username === item.user&&"justify-end"}`}>
+    <div className={` flex group ${activeUser.username === item.user&&"justify-end"}`} id={item.time}>
       <div className={`flex flex-col ${activeUser.username === item.user&&"order-2"}`}>
-        <div className="flex justify-between">
-          <h1 >{item.user}</h1>
-        </div>
-        <div className={`bg-blue text-white p-2 text-lg w-fit  rounded-2xl ${activeUser.username === item.user?"ml-auto rounded-br-none": "rounded-bl-none"}`}>
+        {name&&<div className={`flex justify-between ${activeUser.username === item.user&&"ml-auto"}`} >
+          <h1 >{activeUser.username === name?"You":name}</h1>
+        </div>}
+        <div className={`bg-blue text-white p-2 text-lg w-fit rounded-2xl ${activeUser.username === item.user?"ml-auto rounded-br-none": "rounded-bl-none"} ${name?"mb-1":"my-1"}`}>
           <p className="">{item.text}</p>
         </div>
       </div>

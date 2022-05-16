@@ -49,21 +49,21 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
   };
 
   const displayMsgs = () => {
-    return allMsgs.map((item) => {
-      return <Message item={item} key={item.id} remove={remove} activeUser={activeUser} />;
+    return allMsgs.map((item, i) => {
+      if (allMsgs[i - 1]?.user === item.user) {
+        return <Message item={item} key={item.id} remove={remove} activeUser={activeUser} name={undefined}/>;
+      }else{
+        return <Message item={item} key={item.id} remove={remove} activeUser={activeUser} name={item.user}/>;
+      }
     });
   };
 
   window.addEventListener("resize", () => setHeight(window.innerHeight));
 
-  const bottom = () => {
-    scrollbar.current?.scrollIntoView({behavior: "smooth", block: "end"});
-  };
+  useEffect(() => {
+    scrollbar.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [allMsgs]);
 
-  useEffect(()=>{
-    bottom()
-  },[allMsgs])
-  
   return (
     <div className="flex flex-col flex-1 justify-between mx-2" style={{ height: `calc(${height}px - 72px` }}>
       <Scrollbars>
