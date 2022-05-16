@@ -13,9 +13,9 @@ export default function Message({ item, remove, activeUser, name }) {
       {name && <h1 className={`${activeUser.username === item.user&&"text-right"}`}>{name}</h1>}
       <div className={`${activeUser.username === item.user&&"justify-end"} break-words flex`}>
         <h1 className={`bg-blue text-white p-2 rounded-3xl ${activeUser.username === item.user&&"order-2"} ${activeUser.username === item.user?"rounded-tr-none":"rounded-tl-none"}`} style={{maxWidth: "80%"}} >{item.text}</h1>
-        <div className="flex mb-auto text-lg my-auto ">
-          <img src={require("./img/trash.png")} alt="" width="30" className={`group-hover:scale-y-100 scale-y-0 transition-all ${activeUser.username !== item.user&&"invisible"}`} onClick={() => remove(item.id, item.user)}/>
-          <p className="my-auto group-hover:scale-x-100 scale-x-0 transition-all">{milis()}</p>
+        <div className="flex mb-auto text-lg my-auto flex-wrap mx-1">
+          <img src={require("./img/trash.png")} alt="" width="30" className={`group-hover:scale-y-100 m-auto scale-y-0 transition-all ${activeUser.username !== item.user&&"hidden"}`} onClick={() => remove(item.id, item.user)}/>
+          <p className="my-auto group-hover:scale-x-100 scale-x-0 transition-all text-center">{milis()}</p>
         </div>
       </div>
     </div>
