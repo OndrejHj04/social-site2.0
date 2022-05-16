@@ -15,7 +15,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
 
   const submit = (e) => {
     e.preventDefault();
-    if (input.length) {
+    if (input.length&&input.length<1000) {
       const time = new Date().getTime().toString();
       setDoc(doc(db, "msg", time), {
         user: activeUser.username,
