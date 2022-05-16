@@ -10,7 +10,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
   const tempData = useRef();
   const [height, setHeight] = useState(window.innerHeight);
   initializeApp(firebaseConfig);
-
+  const scrollbar = useRef(null);
   const db = getFirestore();
 
   const submit = (e) => {
@@ -56,9 +56,23 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
 
   window.addEventListener("resize", () => setHeight(window.innerHeight));
 
+  const bottom = () => {
+    scrollbar.current?.scrollIntoView({behavior: "smooth", block: "end"});
+  };
+
+  useEffect(()=>{
+    bottom()
+  },[allMsgs])
+  
   return (
     <div className="flex flex-col flex-1 justify-between mx-2" style={{ height: `calc(${height}px - 72px` }}>
-      <Scrollbars>{allMsgs && <div className="bg-white overflow-y-scroll">{displayMsgs()}</div>}</Scrollbars>
+      <Scrollbars>
+        {allMsgs && (
+          <div ref={scrollbar} className="bg-white overflow-y-scroll">
+            {displayMsgs()}
+          </div>
+        )}
+      </Scrollbars>
       <form className="flex m-2" onSubmit={submit}>
         <input type="text" className="w-full border-2 border-black p-1 rounded-lg" value={input} onChange={(e) => setInput(e.target.value)} />
         <img src={require("./img/send.png")} alt="" width="40" className="ml-2" onClick={submit} />
