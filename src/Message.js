@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import Reaction from "./Reaction";
-export default function Message({ item, remove, activeUser, name, getEmoji }) {
+export default function Message({ item, remove, activeUser, name, getEmoji, emoji }) {
   const milis = () => {
     const date = new Date(Number(item.time));
     const day = date.getDate();
@@ -14,8 +14,8 @@ export default function Message({ item, remove, activeUser, name, getEmoji }) {
   const conatainer = useRef(null)
 
   return (
-    <div className={`w-full break-words group relative cursor-pointer`} onClick={getEmoji} ref={conatainer}>
-      {conatainer && conatainer.current.classList.value.includes("active") &&<Reaction position={activeUser.username === item.user} />}
+    <div className={`w-full break-words group relative cursor-pointer ${emoji === conatainer.current&&"mb-5"}`} onClick={getEmoji} ref={conatainer}>
+      {emoji === conatainer.current &&<Reaction position={activeUser.username === item.user} />}
 
       {name && <h1 className={`${activeUser.username === item.user && "text-right"}`}>{item.user === activeUser.username ? "you" : name}</h1>}
       <div className={`${activeUser.username === item.user && "justify-end"} break-words flex`}>

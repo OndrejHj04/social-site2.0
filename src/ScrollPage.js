@@ -1,9 +1,8 @@
-import { doc, setDoc, getFirestore, onSnapshot, collection, deleteDoc, orderBy, query, limit } from "firebase/firestore";
+import { doc, setDoc, getFirestore, onSnapshot, collection, deleteDoc, orderBy, query } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import { initializeApp } from "firebase/app";
 import { Scrollbars } from "react-custom-scrollbars";
-import Reaction from "./Reaction";
 
 export default function ScrollPage({ firebaseConfig, activeUser }) {
   const [input, setInput] = useState("");
@@ -51,18 +50,20 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
   };
 
   const getEmoji = (e) => {
-    if (emoji) emoji.classList.remove("active");
-    e.currentTarget.classList.add("active");
-
-    setEmoji(e.currentTarget);
+    if (emoji === e.currentTarget) {
+      setEmoji();
+    } else {
+      setEmoji(e.currentTarget);
+    }
   };
-  console.log(emoji);
+
+
   const displayMsgs = () => {
     return allMsgs.map((item, i) => {
       if (allMsgs[i - 1]?.user === item.user) {
-        return <Message item={item} key={item.id} remove={remove} activeUser={activeUser} name={undefined} getEmoji={getEmoji} />;
+        return <Message item={item} key={item.id} remove={remove} activeUser={activeUser} name={undefined} getEmoji={getEmoji} emoji={emoji} />;
       } else {
-        return <Message item={item} key={item.id} remove={remove} activeUser={activeUser} name={item.user} getEmoji={getEmoji} />;
+        return <Message item={item} key={item.id} remove={remove} activeUser={activeUser} name={item.user} getEmoji={getEmoji} emoji={emoji} />;
       }
     });
   };
