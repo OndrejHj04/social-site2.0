@@ -23,20 +23,26 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
       emoji: { ...m.emoji, [activeUser.username]: e.target.textContent },
     });
   };
-  console.log(m.emoji);
+
+  const removeEmoji = () => {
+    updateDoc(doc(db, "msg", item.time), {
+      emoji: { ...m.emoji, [activeUser.username]: delete m.emoji[activeUser.username] },
+    });
+  };
+
   return (
     <div className={`w-full break-words group relative cursor-pointer ${emoji === conatainer.current && "mb-6"}`} onClick={getEmoji} ref={conatainer}>
-      {emoji === conatainer.current && <Reaction pickEmoji={pickEmoji} position={activeUser.username === item.user} />}
+      {emoji === conatainer.current && <Reaction pickEmoji={pickEmoji} removeEmoji={removeEmoji} position={activeUser.username === item.user} />}
 
       {name && <h1 className={`${activeUser.username === item.user && "text-right"}`}>{item.user === activeUser.username ? "you" : name}</h1>}
       <div className={`${activeUser.username === item.user && "justify-end"} break-words flex`}>
-        <h1 className={`bg-blue text-white my-1 p-2 mb-auto rounded-3xl relative ${activeUser.username === item.user && "order-2"} ${activeUser.username === item.user ? "rounded-tr-none" : "rounded-tl-none"}`} style={{ maxWidth: "80%" }}>
+        <h1 className={`bg-blue text-white text-lg my-1 p-2 mb-auto rounded-3xl relative ${activeUser.username === item.user && "order-2"} ${activeUser.username === item.user ? "rounded-tr-none" : "rounded-tl-none"}`} style={{ maxWidth: "80%" }}>
           {item.text}
           {m && (
-            <div className="absolute -bottom-3  left-0 bg-slate-500 rounded-xl z-40 flex flex-row">
-              {Object.keys(m.emoji).map((item) => (
-                <p>{m.emoji[item]}</p>
-              ))}
+            <div className={`absolute -top-3 ${item.user === activeUser.username ? "right-0" : "left-0"} rounded-xl z-40 flex flex-row`}>
+              {Object.keys(m.emoji).map((item, i) => {
+                return i < 5 && <p key={item}>{m.emoji[item]}</p>;
+              })}
             </div>
           )}
         </h1>
