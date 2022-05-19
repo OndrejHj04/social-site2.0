@@ -1,4 +1,4 @@
-import { doc, setDoc, getFirestore, onSnapshot, collection, deleteDoc, orderBy, query } from "firebase/firestore";
+import { doc, setDoc, getFirestore, onSnapshot, collection, deleteDoc, orderBy, query, limit } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import { initializeApp } from "firebase/app";
@@ -22,13 +22,14 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
         user: activeUser.username,
         text: input,
         time: time,
-        emoji: {}
+        emoji: {},
       });
     }
     setInput("");
   };
 
-  const q = query(collection(db, "msg"), orderBy("time", "asc"));
+
+  const q = query(collection(db, "msg"), limit(20) ,orderBy("time", "desc"));
 
   const fetchData = () => {
     onSnapshot(q, (snapshot) => {
@@ -36,6 +37,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
       snapshot.docs.forEach((doc) => {
         msgs.push({ ...doc.data(), id: doc.id });
       });
+      msgs.reverse()
       setAllMsgs(msgs);
     });
   };
@@ -58,7 +60,6 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
     }
   };
 
-
   const displayMsgs = () => {
     return allMsgs.map((item, i) => {
       if (allMsgs[i - 1]?.user === item.user) {
@@ -74,6 +75,18 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
   useEffect(() => {
     container.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [allMsgs]);
+
+  // getDocs(collection(db, "msg")).then((snapshot) => {
+  //   let arr = [];
+  //   snapshot.docs.forEach((doc) => {
+  //     if (new Date().getTime() - Number(doc.data().time) > 60000) {
+  //       arr.push(doc.data())
+  //     }
+  //   });
+  //   arr.forEach(item=>{
+  //     deleteDoc(doc(db, "msg", item.time))
+  //   })
+  // });
 
   return (
     <div className="flex flex-col flex-1 justify-between mx-2" style={{ height: `calc(${height}px - 72px` }}>
