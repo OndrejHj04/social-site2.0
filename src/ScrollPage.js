@@ -22,6 +22,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
         user: activeUser.username,
         text: input,
         time: time,
+        emoji: {}
       });
     }
     setInput("");
@@ -61,9 +62,9 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
   const displayMsgs = () => {
     return allMsgs.map((item, i) => {
       if (allMsgs[i - 1]?.user === item.user) {
-        return <Message item={item} key={item.id} remove={remove} activeUser={activeUser} name={undefined} getEmoji={getEmoji} emoji={emoji} />;
+        return <Message item={item} allMsgs={allMsgs} key={item.id} remove={remove} firebaseConfig={firebaseConfig} activeUser={activeUser} name={undefined} getEmoji={getEmoji} emoji={emoji} />;
       } else {
-        return <Message item={item} key={item.id} remove={remove} activeUser={activeUser} name={item.user} getEmoji={getEmoji} emoji={emoji} />;
+        return <Message item={item} allMsgs={allMsgs} key={item.id} remove={remove} firebaseConfig={firebaseConfig} activeUser={activeUser} name={item.user} getEmoji={getEmoji} emoji={emoji} />;
       }
     });
   };
