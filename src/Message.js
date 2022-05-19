@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { initializeApp } from "firebase/app";
-import { collection, getFirestore, doc, updateDoc, onSnapshot } from "firebase/firestore";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
 import Reaction from "./Reaction";
 export default function Message({ item, remove, activeUser, name, getEmoji, emoji, firebaseConfig, allMsgs }) {
   const milis = () => {
