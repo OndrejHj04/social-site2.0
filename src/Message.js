@@ -40,7 +40,7 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
           {item.text}
           {m && (
             <div className={`absolute -top-3 ${item.user === activeUser.username ? "right-0" : "left-0"} rounded-xl z-40 flex flex-row`}>
-              {Object.keys(m.emoji).map((item, i) => {
+              {Object.keys(m.emoji).sort().map((item, i) => {
                 return <p key={item}>{m.emoji[item]}</p>;
               })}
             </div>
