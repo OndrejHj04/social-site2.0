@@ -13,6 +13,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
   const container = useRef(null);
   const db = getFirestore();
   const [emoji, setEmoji] = useState();
+  const [respond, setRespond] = useState();
 
   const submit = (e) => {
     e.preventDefault();
@@ -23,13 +24,14 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
         text: input,
         time: time,
         emoji: {},
+        respond: respond?respond.firstChild.textContent:""
       });
     }
     setInput("");
+    setRespond()
   };
 
-
-  const q = query(collection(db, "msg"), limit(20) ,orderBy("time", "desc"));
+  const q = query(collection(db, "msg"), limit(20), orderBy("time", "desc"));
 
   const fetchData = () => {
     onSnapshot(q, (snapshot) => {
@@ -37,7 +39,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
       snapshot.docs.forEach((doc) => {
         msgs.push({ ...doc.data(), id: doc.id });
       });
-      msgs.reverse()
+      msgs.reverse();
       setAllMsgs(msgs);
     });
   };
@@ -63,9 +65,9 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
   const displayMsgs = () => {
     return allMsgs.map((item, i) => {
       if (allMsgs[i - 1]?.user === item.user) {
-        return <Message item={item} allMsgs={allMsgs} key={item.id} remove={remove} firebaseConfig={firebaseConfig} activeUser={activeUser} name={undefined} getEmoji={getEmoji} emoji={emoji} />;
+        return <Message reply={reply} item={item} allMsgs={allMsgs} key={item.id} remove={remove} firebaseConfig={firebaseConfig} activeUser={activeUser} name={undefined} getEmoji={getEmoji} emoji={emoji} />;
       } else {
-        return <Message item={item} allMsgs={allMsgs} key={item.id} remove={remove} firebaseConfig={firebaseConfig} activeUser={activeUser} name={item.user} getEmoji={getEmoji} emoji={emoji} />;
+        return <Message reply={reply} item={item} allMsgs={allMsgs} key={item.id} remove={remove} firebaseConfig={firebaseConfig} activeUser={activeUser} name={item.user} getEmoji={getEmoji} emoji={emoji} />;
       }
     });
   };
@@ -76,17 +78,9 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
     container.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [allMsgs]);
 
-  // getDocs(collection(db, "msg")).then((snapshot) => {
-  //   let arr = [];
-  //   snapshot.docs.forEach((doc) => {
-  //     if (new Date().getTime() - Number(doc.data().time) > 60000) {
-  //       arr.push(doc.data())
-  //     }
-  //   });
-  //   arr.forEach(item=>{
-  //     deleteDoc(doc(db, "msg", item.time))
-  //   })
-  // });
+  const reply = (e) => {
+    setRespond(e.currentTarget.parentElement.parentElement.parentElement.firstChild);
+  };
 
   return (
     <div className="flex flex-col flex-1 justify-between mx-2" style={{ height: `calc(${height}px - 72px` }}>
@@ -97,10 +91,30 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
           </div>
         )}
       </Scrollbars>
-      <form className="flex m-2" onSubmit={submit}>
-        <input type="text" className="w-full border-2 border-black p-1 rounded-lg" value={input} onChange={(e) => setInput(e.target.value)} />
+      <form className="flex m-2 ml-0" onSubmit={submit}>
+        {respond && (
+          <div className=" text-white flex">
+            <p className="text-3xl m-auto cursor-pointer" onClick={()=>setRespond()}>❌</p>
+            <p className="bg-blue w-fit rounded-3xl p-2 rounded-tl-none">{respond?.firstChild.textContent}</p>
+          </div>
+        )}
+
+        <input type="text" className="flex-1 border-2 border-black p-1 rounded-lg ml-2" value={input} onChange={(e) => setInput(e.target.value)} />
+
         <img src={require("./img/send.png")} alt="" width="40" className="ml-2" onClick={submit} />
       </form>
     </div>
   );
 }
+
+// getDocs(collection(db, "msg")).then((snapshot) => {
+//   let arr = [];
+//   snapshot.docs.forEach((doc) => {
+//     if (new Date().getTime() - Number(doc.data().time) > 60000) {
+//       arr.push(doc.data())
+//     }
+//   });
+//   arr.forEach(item=>{
+//     deleteDoc(doc(db, "msg", item.time))
+//   })
+// });
