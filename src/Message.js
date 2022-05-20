@@ -38,12 +38,11 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
       <div className={`${activeUser.username === item.user && "justify-end"} break-words flex`}>
         <h1 className={`bg-blue text-white text-lg my-1 p-2 mb-auto rounded-3xl relative ${activeUser.username === item.user && "order-2"} ${activeUser.username === item.user ? "rounded-tr-none" : "rounded-tl-none"}`} style={{ maxWidth: "80%" }}>
           {item.respond && (
-            <span className="flex">
-              <p className="mr-1">Respond to:</p>
-              <div className=" bg-slate-300 text-black -top-5 left-0 p-1 text-base rounded-3xl">{item.respond}</div>
-            </span>
+            <div className="flex justify-end">
+              <div className="break-words bg-slate-300 text-black p-1 text-base rounded-3xl rounded-tr-none">{item.respond}</div>
+              <img src={require("./img/reply.png")} className="mb-auto ml-1" width="20" alt=""/>
+            </div>
           )}
-          {item.text}
           {m && (
             <div className={`absolute -top-3 ${item.user === activeUser.username ? "right-0" : "left-0"} rounded-xl z-40 flex flex-row`}>
               {Object.keys(m.emoji)
@@ -53,6 +52,7 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
                 })}
             </div>
           )}
+          {item.text}
         </h1>
         <div className="flex mb-auto my-auto flex-wrap mx-1">
           <div className="flex">
