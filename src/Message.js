@@ -41,7 +41,7 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
           {m && (
             <div className={`absolute -top-3 ${item.user === activeUser.username ? "right-0" : "left-0"} rounded-xl z-40 flex flex-row`}>
               {Object.keys(m.emoji).map((item, i) => {
-                return i < 5 && <p key={item}>{m.emoji[item]}</p>;
+                return <p key={item}>{m.emoji[item]}</p>;
               })}
             </div>
           )}
@@ -56,3 +56,8 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
     </div>
   );
 }
+// if(i<4){
+//   return <p key={item}>{m.emoji[item]}</p>
+// }else if(i === Object.keys(m.emoji).length-1){
+//   return <p className="text-black">+{Object.keys(m.emoji).length-4}</p>
+// }
