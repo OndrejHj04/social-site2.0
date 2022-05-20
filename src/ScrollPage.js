@@ -91,15 +91,15 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
           </div>
         )}
       </Scrollbars>
-      <form className="flex m-2 ml-0" onSubmit={submit}>
+      <form className="flex my-2" onSubmit={submit}>
         {respond && (
-          <div className=" text-white flex">
-            <p className="text-3xl m-auto cursor-pointer" onClick={()=>setRespond()}>❌</p>
-            <p className="bg-blue w-fit rounded-3xl p-2 rounded-tl-none">{respond?.lastChild.textContent}</p>
-          </div>
+          <>
+            {/* <p className="text-2xl m-auto cursor-pointer absolute -top-4 -left-2" onClick={()=>setRespond()}>❌</p> */}
+            <p className="bg-blue rounded-3xl p-2 rounded-tl-none" >{respond?.lastChild.textContent}</p>
+          </>
         )}
 
-        <input type="text" className="flex-1 border-2 border-black p-1 rounded-lg ml-2" value={input} onChange={(e) => setInput(e.target.value)} />
+        <input type="text" className="w-full border-2 border-black p-1 rounded-lg ml-2" value={input} onChange={(e) => setInput(e.target.value)} />
 
         <img src={require("./img/send.png")} alt="" width="40" className="ml-2" onClick={submit} />
       </form>
