@@ -81,7 +81,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
   const reply = (e) => {
     setRespond(e.currentTarget.parentElement.parentElement.parentElement.firstChild);
   };
- console.log(respond?.lastChild.textContent)
+
   return (
     <div className="flex flex-col flex-1 justify-between mx-2" style={{ height: `calc(${height}px - 72px` }}>
       <Scrollbars>
@@ -95,7 +95,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
         {respond && (
           <>
             {/* <p className="text-2xl m-auto cursor-pointer absolute -top-4 -left-2" onClick={()=>setRespond()}>❌</p> */}
-            <p className="bg-blue rounded-3xl p-2 rounded-tl-none" >{respond?.lastChild.textContent}</p>
+            <p className="bg-blue rounded-3xl p-2 rounded-tl-none overflow-hidden text-white" style={{width: "70%", textOverflow: "ellipsis"}}>{respond?.lastChild.textContent}</p>
           </>
         )}
 
