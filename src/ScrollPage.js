@@ -24,11 +24,11 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
         text: input,
         time: time,
         emoji: {},
-        respond: respond?respond.lastChild.textContent:""
+        respond: respond ? respond.lastChild.textContent : "",
       });
     }
     setInput("");
-    setRespond()
+    setRespond();
   };
 
   const q = query(collection(db, "msg"), limit(20), orderBy("time", "desc"));
@@ -91,17 +91,22 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
           </div>
         )}
       </Scrollbars>
-      <form className="flex my-2" onSubmit={submit}>
+      <form className="flex my-2 flex-col" onSubmit={submit}>
         {respond && (
           <>
-            {/* <p className="text-2xl m-auto cursor-pointer absolute -top-4 -left-2" onClick={()=>setRespond()}>❌</p> */}
-            <p className="bg-blue rounded-3xl p-2 rounded-tl-none overflow-hidden text-white" style={{width: "70%", textOverflow: "ellipsis"}}>{respond?.lastChild.textContent}</p>
+            
+            <div className="flex relative" style={{maxHeight: "100px"}}>
+            <p className="text-2xl cursor-pointer" onClick={()=>setRespond()}>❌</p>
+              <p className="bg-blue text-white rounded-3xl rounded-tl-none text-sm overflow-scroll w-fit mb-2 p-2" style={{ maxHeight: "90px", scrollPaddingBottom: "10px" }}>{respond?.lastChild.textContent}</p>
+            </div>
+            {/* <p className="bg-blue rounded-3xl p-2 rounded-tl-none overflow-hidden text-white" style={{width: "250px"}}>{respond?.lastChild.textContent.length>30?respond?.lastChild.textContent.substring(0,30):respond?.lastChild.textContent}</p> */}
           </>
         )}
+        <div className="flex">
+          <input type="text" className="w-full border-2 border-black p-1 rounded-lg" style={{ minWidth: "100px" }} value={input} onChange={(e) => setInput(e.target.value)} />
 
-        <input type="text" className="w-full border-2 border-black p-1 rounded-lg ml-2" value={input} onChange={(e) => setInput(e.target.value)} />
-
-        <img src={require("./img/send.png")} alt="" width="40" className="ml-2" onClick={submit} />
+          <img src={require("./img/send.png")} alt="" width="40" className="ml-2" onClick={submit} />
+        </div>
       </form>
     </div>
   );
