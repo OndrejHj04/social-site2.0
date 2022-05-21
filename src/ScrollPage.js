@@ -92,6 +92,10 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
     }
   };
 
+  useEffect(() => {
+    respond && container.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  },[respond])
+
   return (
     <div className="flex flex-col flex-1 justify-between mx-2" ref={win} onClick={cancel} style={{ height: `calc(${height}px - 72px` }}>
       <Scrollbars>

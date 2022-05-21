@@ -7,6 +7,7 @@ export default function Reaction({pickEmoji, removeEmoji}) {
       <p onClick={pickEmoji}>🤣</p>
       <p onClick={pickEmoji}>😎</p>
       <p onClick={pickEmoji}>😢</p>
+      <p onClick={pickEmoji}>💖</p>
     </div>
   );
 }
