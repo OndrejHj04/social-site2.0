@@ -61,7 +61,6 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
     } else {
       setEmoji(e.currentTarget);
     }
-    container.current?.scrollBy(0, 100);
   };
 
   const displayMsgs = () => {
@@ -76,7 +75,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
 
   window.addEventListener("resize", () => {
     setHeight(window.innerHeight);
-    setEmoji();
+    container.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   });
 
   useEffect(() => {
