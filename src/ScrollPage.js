@@ -14,6 +14,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
   const db = getFirestore();
   const [emoji, setEmoji] = useState();
   const [respond, setRespond] = useState();
+  const win = useRef(null);
 
   const submit = (e) => {
     e.preventDefault();
@@ -60,7 +61,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
     } else {
       setEmoji(e.currentTarget);
     }
-    container.current?.scrollBy(0,100)
+    container.current?.scrollBy(0, 100);
   };
 
   const displayMsgs = () => {
@@ -73,10 +74,12 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
     });
   };
 
-  window.addEventListener("resize", () => setHeight(window.innerHeight));
+  window.addEventListener("resize", () => {
+    setHeight(window.innerHeight);
+    setEmoji();
+  });
 
   useEffect(() => {
-    console.log(allMsgs)
     container.current?.scrollIntoView({ behavior: "smooth", block: "end" }); //eslint-disable-next-line
   }, [allMsgs?.length]);
 
@@ -84,8 +87,14 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
     setRespond(e.currentTarget.parentElement.parentElement.parentElement.firstChild);
   };
 
+  const cancel = (e) => {
+    if (emoji) {
+      setEmoji();
+    }
+  };
+
   return (
-    <div className="flex flex-col flex-1 justify-between mx-2" style={{ height: `calc(${height}px - 72px` }}>
+    <div className="flex flex-col flex-1 justify-between mx-2" ref={win} onClick={cancel} style={{ height: `calc(${height}px - 72px` }}>
       <Scrollbars>
         {allMsgs && (
           <div ref={container} className="bg-white overflow-y-scroll">
@@ -96,10 +105,13 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
       <form className="flex my-2 flex-col" onSubmit={submit}>
         {respond && (
           <>
-            
-            <div className="flex relative" style={{maxHeight: "100px"}}>
-            <p className="text-2xl cursor-pointer" onClick={()=>setRespond()}>❌</p>
-              <p className="bg-blue text-white rounded-3xl rounded-tl-none text-sm overflow-scroll w-fit mb-2 p-2" style={{ maxHeight: "90px", scrollPaddingBottom: "10px" }}>{respond?.lastChild.textContent}</p>
+            <div className="flex relative" style={{ maxHeight: "100px" }}>
+              <p className="text-2xl cursor-pointer" onClick={() => setRespond()}>
+                ❌
+              </p>
+              <p className="bg-blue text-white rounded-3xl rounded-tl-none text-sm overflow-scroll w-fit mb-2 p-2" style={{ maxHeight: "90px", scrollPaddingBottom: "10px" }}>
+                {respond?.lastChild.textContent}
+              </p>
             </div>
             {/* <p className="bg-blue rounded-3xl p-2 rounded-tl-none overflow-hidden text-white" style={{width: "250px"}}>{respond?.lastChild.textContent.length>30?respond?.lastChild.textContent.substring(0,30):respond?.lastChild.textContent}</p> */}
           </>
@@ -107,7 +119,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
         <div className="flex">
           <input type="text" className="w-full border-2 border-black p-1 rounded-lg" style={{ minWidth: "100px" }} value={input} onChange={(e) => setInput(e.target.value)} />
 
-          <img src={require(`./img/${respond?"reply":"send"}.png`)} alt="" width="40" className="ml-2" onClick={submit} />
+          <img src={require(`./img/${respond ? "reply" : "send"}.png`)} alt="" width="40" className="ml-2" onClick={submit} />
         </div>
       </form>
     </div>
