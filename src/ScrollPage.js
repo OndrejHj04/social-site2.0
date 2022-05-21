@@ -60,6 +60,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
     } else {
       setEmoji(e.currentTarget);
     }
+    container.current?.scrollBy(0,100)
   };
 
   const displayMsgs = () => {

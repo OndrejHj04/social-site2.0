@@ -39,11 +39,6 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
 
   return (
     <div className={`w-full break-words group relative my-0.5 cursor-pointer ${emoji === conatainer.current && ""}`} onClick={getEmoji} ref={conatainer}>
-
-      <div className={`absolute z-30 -bottom-4 transition-all ${emoji === conatainer.current ? "scale-100" : "scale-0"} ${activeUser.username === item.user?"right-1 ":"left-1"}`}>
-        <Reaction pickEmoji={pickEmoji} removeEmoji={removeEmoji} />
-      </div>
-
       {name && <h1 className={`${activeUser.username === item.user && "text-right"}`}>{item.user === activeUser.username ? "you" : name}</h1>}
       <div className={`${activeUser.username === item.user && "justify-end"} break-words flex`}>
         <h1 className={`bg-blue text-white text-lg my-1 p-2 mb-auto rounded-3xl relative ${activeUser.username === item.user && "order-2"} ${activeUser.username === item.user ? "rounded-tr-none" : "rounded-tl-none"}`} style={{ maxWidth: "80%" }}>
@@ -55,16 +50,21 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
           )}
           {m && (
             <div className={`absolute -top-3 ${item.user === activeUser.username ? "right-0" : "left-0"} rounded-xl z-40 flex flex-row`}>
-              {Object.keys(m.emoji)
-                .sort()
-                .map((item) => {
-                  return <p key={item}>{m.emoji[item]}</p>;
-                })}
+              <div className={` transition-all ${emoji === conatainer.current ? "scale-100" : "scale-0"} ${activeUser.username === item.user ? "right-1 order-1" : "left-1 order-2"}`}>
+                <Reaction pickEmoji={pickEmoji} removeEmoji={removeEmoji} />
+              </div>
+              <div className={`${activeUser.username === item.user ? "order-2" : "order-1"} flex`}>
+                {Object.keys(m.emoji)
+                  .sort()
+                  .map((item) => {
+                    return <p key={item}>{m.emoji[item]}</p>;
+                  })}
+              </div>
             </div>
           )}
           {item.text}
         </h1>
-        <div className="flex mb-auto mb-auto flex-wrap mx-1">
+        <div className="flex mt-auto flex-wrap mx-1">
           <div className={`flex flex-wrap transition-all ${emoji === conatainer.current ? "scale-100" : "scale-0"}`}>
             <img src={require("./img/trash.png")} alt="" width="30" onClick={() => remove(item.id, item.user)} />
             <img src={require("./img/reply.png")} alt="" width="30" onClick={reply} />
