@@ -111,15 +111,3 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
     </div>
   );
 }
-
-// getDocs(collection(db, "msg")).then((snapshot) => {
-//   let arr = [];
-//   snapshot.docs.forEach((doc) => {
-//     if (new Date().getTime() - Number(doc.data().time) > 60000) {
-//       arr.push(doc.data())
-//     }
-//   });
-//   arr.forEach(item=>{
-//     deleteDoc(doc(db, "msg", item.time))
-//   })
-// });

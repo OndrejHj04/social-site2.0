@@ -38,9 +38,9 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
   };
 
   return (
-    <div className={`w-full break-words group relative cursor-pointer ${emoji === conatainer.current && "mb-6"}`} onClick={getEmoji} ref={conatainer}>
+    <div className={`w-full break-words group relative my-0.5 cursor-pointer ${emoji === conatainer.current && ""}`} onClick={getEmoji} ref={conatainer}>
 
-      <div className={`absolute z-30 -bottom-5 transition-all ${emoji === conatainer.current ? "scale-100" : "scale-0"} ${activeUser.username === item.user?"right-1 ":"left-1"}`}>
+      <div className={`absolute z-30 -bottom-4 transition-all ${emoji === conatainer.current ? "scale-100" : "scale-0"} ${activeUser.username === item.user?"right-1 ":"left-1"}`}>
         <Reaction pickEmoji={pickEmoji} removeEmoji={removeEmoji} />
       </div>
 
@@ -64,7 +64,7 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
           )}
           {item.text}
         </h1>
-        <div className="flex mb-auto my-auto flex-wrap mx-1">
+        <div className="flex mb-auto mb-auto flex-wrap mx-1">
           <div className={`flex flex-wrap transition-all ${emoji === conatainer.current ? "scale-100" : "scale-0"}`}>
             <img src={require("./img/trash.png")} alt="" width="30" onClick={() => remove(item.id, item.user)} />
             <img src={require("./img/reply.png")} alt="" width="30" onClick={reply} />
