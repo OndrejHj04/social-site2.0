@@ -38,8 +38,8 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
   };
 
   return (
-    <div className={`w-full break-words group relative my-0.5 cursor-pointer ${emoji === conatainer.current && ""}`} onClick={getEmoji} ref={conatainer}>
-      {name && <h1 className={`${activeUser.username === item.user && "text-right"}`}>{item.user === activeUser.username ? "you" : name}</h1>}
+    <div className={`w-full break-words group relative my-0.5 cursor-pointer`} onClick={getEmoji} ref={conatainer}>
+      {name && <h1 className={`${activeUser.username === item.user && "text-right"} mb-1.5`}>{item.user === activeUser.username ? "you" : name}</h1>}
       <div className={`${activeUser.username === item.user && "justify-end"} break-words flex`}>
         <h1 className={`bg-blue text-white text-lg my-1 p-2 mb-auto rounded-3xl relative ${activeUser.username === item.user && "order-2"} ${activeUser.username === item.user ? "rounded-tr-none" : "rounded-tl-none"}`} style={{ maxWidth: "80%" }}>
           {item.respond && (
@@ -66,8 +66,8 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
         </h1>
         <div className="flex mt-auto flex-wrap mx-1">
           <div className={`flex flex-wrap transition-all ${emoji === conatainer.current ? "scale-100" : "scale-0"}`}>
-            <img src={require("./img/trash.png")} alt="" width="30" onClick={() => remove(item.id, item.user)} />
-            <img src={require("./img/reply.png")} alt="" width="30" onClick={reply} />
+            <img src={require("./img/trash.png")} alt="" width="27" onClick={() => remove(item.id, item.user)} />
+            <img src={require("./img/reply.png")} alt="" width="27" onClick={reply} />
             <p className="my-auto ">{milis()}</p>
           </div>
         </div>

@@ -76,8 +76,9 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
   window.addEventListener("resize", () => setHeight(window.innerHeight));
 
   useEffect(() => {
+    console.log(allMsgs)
     container.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [allMsgs]);
+  }, [allMsgs?.length]);
 
   const reply = (e) => {
     setRespond(e.currentTarget.parentElement.parentElement.parentElement.firstChild);
