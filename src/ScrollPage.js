@@ -77,7 +77,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
 
   useEffect(() => {
     console.log(allMsgs)
-    container.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    container.current?.scrollIntoView({ behavior: "smooth", block: "end" }); //eslint-disable-next-line
   }, [allMsgs?.length]);
 
   const reply = (e) => {
