@@ -105,7 +105,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
         <div className="flex">
           <input type="text" className="w-full border-2 border-black p-1 rounded-lg" style={{ minWidth: "100px" }} value={input} onChange={(e) => setInput(e.target.value)} />
 
-          <img src={require("./img/send.png")} alt="" width="40" className="ml-2" onClick={submit} />
+          <img src={require(`./img/${respond?"reply":"send"}.png`)} alt="" width="40" className="ml-2" onClick={submit} />
         </div>
       </form>
     </div>

@@ -10,8 +10,15 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
     const hours = date.getHours();
     const minutes = date.getMinutes().toString().length < 2 ? "0" + date.getMinutes() : date.getMinutes();
 
-    return `${day}. ${month}. ${hours}:${minutes}`;
+    if (new Date().getMonth() + 1 === month && new Date().getDate() === day) {
+      return `today ${hours}:${minutes}`;
+    } else if (new Date().getDate() - 1 === day) {
+      return `yesterday ${hours}:${minutes}`;
+    } else {
+      return `${day}. ${month}. ${hours}:${minutes}`;
+    }
   };
+
   initializeApp(firebaseConfig);
   const db = getFirestore();
   const conatainer = useRef(null);
@@ -32,7 +39,10 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
 
   return (
     <div className={`w-full break-words group relative cursor-pointer ${emoji === conatainer.current && "mb-6"}`} onClick={getEmoji} ref={conatainer}>
-      {emoji === conatainer.current && <Reaction pickEmoji={pickEmoji} removeEmoji={removeEmoji} position={activeUser.username === item.user} />}
+
+      <div className={`absolute z-30 -bottom-5 transition-all ${emoji === conatainer.current ? "scale-100" : "scale-0"} ${activeUser.username === item.user?"right-1 ":"left-1"}`}>
+        <Reaction pickEmoji={pickEmoji} removeEmoji={removeEmoji} />
+      </div>
 
       {name && <h1 className={`${activeUser.username === item.user && "text-right"}`}>{item.user === activeUser.username ? "you" : name}</h1>}
       <div className={`${activeUser.username === item.user && "justify-end"} break-words flex`}>
@@ -40,14 +50,14 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
           {item.respond && (
             <div className="flex w-full">
               <div className="bg-slate-300 text-black p-1 text-base rounded-3xl rounded-tr-none overflow-hidden">{item.respond}</div>
-              <img src={require("./img/reply.png")} className="mb-auto ml-1" width="20" alt=""/>
+              <img src={require("./img/reply.png")} className="mb-auto ml-1" width="20" alt="" />
             </div>
           )}
           {m && (
             <div className={`absolute -top-3 ${item.user === activeUser.username ? "right-0" : "left-0"} rounded-xl z-40 flex flex-row`}>
               {Object.keys(m.emoji)
                 .sort()
-                .map((item, i) => {
+                .map((item) => {
                   return <p key={item}>{m.emoji[item]}</p>;
                 })}
             </div>
@@ -55,10 +65,10 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
           {item.text}
         </h1>
         <div className="flex mb-auto my-auto flex-wrap mx-1">
-          <div className="flex flex-wrap">
-            <img src={require("./img/trash.png")} alt="" width="30" className={`group-hover:scale-y-100 m-auto scale-y-0 transition-all ${activeUser.username !== item.user && "hidden"}`} onClick={() => remove(item.id, item.user)} />
-            <img src={require("./img/reply.png")} alt="" width="30" className="mx-auto scale-0 group-hover:scale-100 transition-all" onClick={reply} />
-            <p className="my-auto group-hover:scale-x-100 scale-x-0 transition-all text-center">{milis()}</p>
+          <div className={`flex flex-wrap transition-all ${emoji === conatainer.current ? "scale-100" : "scale-0"}`}>
+            <img src={require("./img/trash.png")} alt="" width="30" onClick={() => remove(item.id, item.user)} />
+            <img src={require("./img/reply.png")} alt="" width="30" onClick={reply} />
+            <p className="my-auto ">{milis()}</p>
           </div>
         </div>
       </div>
