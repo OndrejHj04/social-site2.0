@@ -1,29 +1,33 @@
-import { data } from "autoprefixer";
 import { useEffect, useState } from "react";
-
+import Patch from "./Patch";
 export default function Development() {
   const [repo, setRepo] = useState();
-
   useEffect(() => {
     fetch("https://api.github.com/repos/OndrejHj04/social-site2.0/commits?per_page=100")
       .then((res) => res.json())
       .then((data) => setRepo(data));
   }, []);
 
-  const axes = () => {
-    let arr = [];
-
-    repo?.map((item) => {
-      const day = item.commit.author.date.substring(8, 10);
-      const month = item.commit.author.date.substring(5, 7);
-      const d = `${day}. ${month}.`;
-      arr = [...arr, d];
-
+  const data = () => {
+    let object = {};
+    repo?.forEach((item, i) => {
+      if (item.commit.message.split("\n\n")[0].length === 10 || item.commit.message.split("\n\n")[0][10] === "0") {
+        object = { ...object, [item.commit.message.split("\n\n")[0]]: { me: item, children: [] } };
+      } else {
+        object[Object.keys(object)[Object.keys(object).length - 1]]?.children.push(item);
+      }
     });
-    return arr
+
+    
+    return object
   };
 
-  console.log(axes())
+  const getPatches = () =>{
 
-  return <div className="max-w-5xl mx-auto"></div>;
+    return data()&&Object.keys(data()).map(item=>{
+      return <Patch key={item} item={data()[item]} />
+    })
+  }
+
+  return <div className="max-w-5xl mx-auto">{getPatches()}</div>;
 }
