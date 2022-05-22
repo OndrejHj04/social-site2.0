@@ -30,6 +30,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
     }
     setInput("");
     setRespond();
+    container.current?.scrollIntoView({ behavior: "smooth", block: "end" }); 
   };
 
   const q = query(collection(db, "msg"), limit(20), orderBy("time", "desc"));
@@ -78,18 +79,8 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
     container.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   });
 
-  useEffect(() => {
-    container.current?.scrollIntoView({ behavior: "smooth", block: "end" }); //eslint-disable-next-line
-  }, [allMsgs?.length]);
-
   const reply = (e) => {
     setRespond(e.currentTarget.parentElement.parentElement.parentElement.firstChild);
-  };
-
-  const cancel = (e) => {
-    if (emoji) {
-      setEmoji();
-    }
   };
 
   useEffect(() => {
@@ -97,7 +88,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
   },[respond])
 
   return (
-    <div className="flex flex-col flex-1 justify-between mx-2" ref={win} onClick={cancel} style={{ height: `calc(${height}px - 72px` }}>
+    <div className="flex flex-col flex-1 justify-between mx-2" ref={win} onClick={()=>emoji&&setEmoji()} style={{ height: `calc(${height}px - 72px` }}>
       <Scrollbars>
         {allMsgs && (
           <div ref={container} className="bg-white overflow-y-scroll">
@@ -116,7 +107,6 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
                 {respond?.lastChild.textContent}
               </p>
             </div>
-            {/* <p className="bg-blue rounded-3xl p-2 rounded-tl-none overflow-hidden text-white" style={{width: "250px"}}>{respond?.lastChild.textContent.length>30?respond?.lastChild.textContent.substring(0,30):respond?.lastChild.textContent}</p> */}
           </>
         )}
         <div className="flex">

@@ -6,6 +6,7 @@ import { getFirestore, collection, onSnapshot } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import Nav from "./Nav";
 import { useEffect, useState } from "react";
+import Development from "./Development";
 export default function App() {
   const data = window.localStorage.getItem("user");
   const [allUsers, setAllUsers] = useState();
@@ -45,14 +46,14 @@ export default function App() {
   }, [location]);
 
 
-
   return (
       <Routes>
         <Route path="/" element={<Nav activeUser={activeUser} url={url} changeActiveUser={changeActiveUser} />}>
           <Route path="/" element={<Navigate to="/login" />}></Route>
-          <Route path="/login" element={<Login firebaseConfig={firebaseConfig} changeActiveUser={changeActiveUser} activeUser={activeUser} />}></Route>
-          <Route path="/register" element={<Register firebaseConfig={firebaseConfig} allUsers={allUsers} changeActiveUser={changeActiveUser} activeUser={activeUser} />}></Route>
-          <Route path="/scroll-page" element={<ScrollPage activeUser={activeUser} firebaseConfig={firebaseConfig}/>}></Route>
+          <Route path="/login" element={<Login firebaseConfig={firebaseConfig} changeActiveUser={changeActiveUser} activeUser={activeUser} />} />
+          <Route path="/register" element={<Register firebaseConfig={firebaseConfig} allUsers={allUsers} changeActiveUser={changeActiveUser} activeUser={activeUser} />} />
+          <Route path="/scroll-page" element={<ScrollPage activeUser={activeUser} firebaseConfig={firebaseConfig}/>} />
+          <Route path="/development" element={<Development />} />
         </Route>
       </Routes>
   );

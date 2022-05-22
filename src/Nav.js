@@ -1,4 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
+
 export default function Nav({ url, activeUser, changeActiveUser }) {
 
   const navigate = useNavigate()
@@ -11,7 +12,7 @@ export default function Nav({ url, activeUser, changeActiveUser }) {
   return (
     <>
       <div className="bg-blue p-3 flex justify-between">
-        <h1 className="font-chalk text-5xl text-white">Blig</h1>
+        <h1 className="font-chalk text-5xl text-white cursor-pointer" onClick={()=>navigate("/development")}>Blig</h1>
         {url.includes("scroll-page") && activeUser && activeUser.username && (
           <>
             <h1 className="my-auto mx-2 text-2xl text-white flex-1 text-center" style={{fontSize: "min(5vw, 30px)"}}>{activeUser.username}</h1>

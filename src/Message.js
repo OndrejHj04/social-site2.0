@@ -66,7 +66,7 @@ export default function Message({ item, remove, activeUser, name, getEmoji, emoj
         </h1>
         <div className="flex mt-auto flex-wrap mx-1">
           <div className={`flex flex-wrap transition-all ${emoji === conatainer.current ? "scale-100" : "scale-0"}`}>
-            <img src={require("./img/trash.png")} alt="" width="27" onClick={() => remove(item.id, item.user)} />
+            {item.user === activeUser.username&&<img src={require("./img/trash.png")} alt="" width="27" onClick={() => remove(item.id, item.user)} />}
             <img src={require("./img/reply.png")} alt="" width="27" onClick={reply} />
             <p className="my-auto ">{milis()}</p>
           </div>
