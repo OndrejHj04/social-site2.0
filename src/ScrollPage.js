@@ -1,8 +1,10 @@
 import { doc, setDoc, getFirestore, onSnapshot, collection, deleteDoc, orderBy, query, limit } from "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import { initializeApp } from "firebase/app";
 import { Scrollbars } from "react-custom-scrollbars";
+
+export const h = createContext();
 
 export default function ScrollPage({ firebaseConfig, activeUser }) {
   const [input, setInput] = useState("");
@@ -30,7 +32,7 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
     }
     setInput("");
     setRespond();
-    container.current?.scrollIntoView({ behavior: "smooth", block: "end" }); 
+    container.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   };
 
   const q = query(collection(db, "msg"), limit(20), orderBy("time", "desc"));
@@ -67,9 +69,16 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
   const displayMsgs = () => {
     return allMsgs.map((item, i) => {
       if (allMsgs[i - 1]?.user === item.user) {
-        return <Message reply={reply} item={item} allMsgs={allMsgs} key={item.id} remove={remove} firebaseConfig={firebaseConfig} activeUser={activeUser} name={undefined} getEmoji={getEmoji} emoji={emoji} />;
+        return (
+
+            <Message reply={reply} item={item} allMsgs={allMsgs} key={item.id} remove={remove} firebaseConfig={firebaseConfig} activeUser={activeUser} name={undefined} getEmoji={getEmoji} emoji={emoji} />
+
+        );
       } else {
-        return <Message reply={reply} item={item} allMsgs={allMsgs} key={item.id} remove={remove} firebaseConfig={firebaseConfig} activeUser={activeUser} name={item.user} getEmoji={getEmoji} emoji={emoji} />;
+        return (
+
+            <Message reply={reply} item={item} allMsgs={allMsgs} key={item.id} remove={remove} firebaseConfig={firebaseConfig} activeUser={activeUser} name={undefined} getEmoji={getEmoji} emoji={emoji} />
+        );
       }
     });
   };
@@ -85,10 +94,10 @@ export default function ScrollPage({ firebaseConfig, activeUser }) {
 
   useEffect(() => {
     respond && container.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  },[respond])
+  }, [respond]);
 
   return (
-    <div className="flex flex-col flex-1 justify-between mx-2" ref={win} onClick={()=>emoji&&setEmoji()} style={{ height: `calc(${height}px - 72px` }}>
+    <div className="flex flex-col flex-1 justify-between mx-2" ref={win} onClick={() => emoji && setEmoji()} style={{ height: `calc(${height}px - 72px` }}>
       <Scrollbars>
         {allMsgs && (
           <div ref={container} className="bg-white overflow-y-scroll">
